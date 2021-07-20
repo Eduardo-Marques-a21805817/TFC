@@ -13,25 +13,29 @@ root = Tk()
 root.title("TFC")
 root.geometry("600x600")
 
+listaDeColunas = []
+
 #função para criar a connexão á DB
 def connectToDB():
 	DBendpoint = input.get()
 	DBUsername = inputUser.get()
 	DBPassword = inputPassword.get()
 	DBName = inputDBName.get()
+
+	if (DBendpoint == "DB endpoint" and DBName == "DB name" and DBUsername == "Username" and DBPassword == "Password"):
+		messagebox.showinfo(title="Error", message="Could not Connect to database")
+
+
 	DBConn = mysql.connector.connect(host=DBendpoint,user=DBUsername,password=DBPassword,db=DBName)
-	#try:
-	#	DBConn = mysql.connector.connect(host=DBendpoint,user=DBUsername,password=DBPassword)
-	#except:
-	#	messagebox.showinfo(title="Error",message="Could not Connect to database")
-	#	drop= OptionMenu(root, clicado, "1","2","3","4","5")
-	#	drop.grid(row=3,column=0,sticky="W")
+
+
+
+
 	if(DBConn.is_connected()==False):
 		messagebox.showinfo(title="Error",message="Could not Connect to database")
-
 	else:
 		messagebox.showinfo(title="Error",message="Could Connect to database")
-		ListOfTables=[]
+
 		cursor = DBConn.cursor()
 		cursor.execute("Show tables;")
 		listaTemp =cursor.fetchall()
@@ -48,27 +52,35 @@ def connectToDB():
 	#print("things")
 
 #caixa de texto para receber o endpoint da DB
+textEnd = Label(root,text="DB Endpoint")
+textEnd.grid(row=0,column=0,sticky="W")
 input =Entry(root,width=60,borderwidth=5)
-input.grid(row=0,column=0)
-input.insert(0,"DB endpoint")
+input.grid(row=1,column=0)
+
 
 #input do nome da base de dados
+textDBName = Label(root,text="DB Name")
+textDBName.grid(row=2,column=0,sticky="W")
 inputDBName =Entry(root,width=60,borderwidth=5)
-inputDBName.grid(row=1,column=0)
-inputDBName.insert(0,"DB name")
+inputDBName.grid(row=3,column=0,ipady=4,ipadx=4)
+
 
 #caixa de texto para receber o username da DB
+textName = Label(root,text="Username")
+textName.grid(row=4,column=0,sticky="W")
 inputUser=Entry(root,width=27,borderwidth=5)
-inputUser.grid(row=2,column=0,ipady=4,ipadx=4,pady=4,sticky="W")
-inputUser.insert(0,"Username")
+inputUser.grid(row=5,column=0,ipady=4,ipadx=4,sticky="W")
+
 
 #caixa de texto para receber a password da DB
+textPass = Label(root,text="password")
+textPass.grid(row=4,column=0,padx=4)
 inputPassword=Entry(root,width=27,borderwidth=5)
-inputPassword.grid(row=2,column=0,ipady=4,ipadx=4,pady=4,sticky="E")
-inputPassword.insert(0, "Password")
+inputPassword.grid(row=5,column=0,ipady=4,ipadx=4,sticky="E")
+
 
 connectButton = Button(root,text="Connect",width=20,borderwidth=5, command=connectToDB)
-connectButton.grid(row=2,column=1)
+connectButton.grid(row=5,column=1)
 
 
 
