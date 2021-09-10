@@ -28,7 +28,7 @@ listaDeColunas = []
 
 def getAudioFile():
     root.filename = filedialog.askopenfilename(initialdir="C:/", title="select a music file",
-                                               filetypes=(("mp3 Files", "*.mp3"), ("wav Files", "*.wav"),))
+                                               filetypes=(("Audio Files", "*.mp3  .wav"), ))
     global file_path
     file_path = root.filename
    # print("this is the filepath {}".format(file_path))

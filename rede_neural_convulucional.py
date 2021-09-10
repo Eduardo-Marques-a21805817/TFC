@@ -45,25 +45,31 @@ def build_model(input_shape):
     model = keras.Sequential()
 
     # 1st conv layer/1º camada de convulução
-    model.add(keras.layers.Conv2D(128,(3,3),activation="relu",input_shape=input_shape) )#32 kernels/ kernel 3x3
-    model.add(keras.layers.MaxPool2D((3,3),strides=(2,2),padding="same"))
-    model.add(keras.layers.BatchNormalization())#standardização da ativação de neurónios na layer
+    model.add(keras.layers.Conv2D(256,(3,3),activation="relu",input_shape=input_shape) )#32 kernels/ kernel 3x3
+    #model.add(keras.layers.MaxPool2D((3,3),strides=(2,2),padding="same"))
+   # model.add(keras.layers.BatchNormalization())#standardização da ativação de neurónios na layer
 
     # 2st conv layer/2º camada de convulução
-    model.add(keras.layers.Conv2D(64, (3, 3), activation="relu", input_shape=input_shape) ) # 32 kernels/ kernel 3x3
-    model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding="same"))
+    model.add(keras.layers.Conv2D(256, (3, 3), activation="relu", input_shape=input_shape) ) # 32 kernels/ kernel 3x3
+
+    model.add(keras.layers.AveragePooling2D((3, 3), strides=(2, 2), padding="same"))
+    model.add(keras.layers.Conv2D(256, (3, 3), activation="relu", input_shape=input_shape))  # 32 kernels/ kernel 3x3
+    model.add(keras.layers.AveragePooling2D((3, 3), strides=(2, 2), padding="same"))
+
+    #model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding="same"))
+    #model.add(keras.layers.Conv2D(512, (4, 4), activation="relu", input_shape=input_shape))
     model.add(keras.layers.BatchNormalization())
 
     # 3st conv layer/3º camada de convulução
-    model.add(keras.layers.Conv2D(32, (2, 2), activation="relu", input_shape=input_shape))  # 32 kernels/ kernel 2x2
-    model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding="same"))
-    model.add(keras.layers.BatchNormalization())
+    #model.add(keras.layers.Conv2D(32, (2, 2), activation="relu", input_shape=input_shape))  # 32 kernels/ kernel 2x2
+   # model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding="same"))
+    #model.add(keras.layers.BatchNormalization())
 
     #flatten the output and feed it into the dense layer
     model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(64,activation="relu"))
-    model.add(keras.layers.Dropout(0.3))#taxa de "perda de neurónios"
-
+    model.add(keras.layers.Dense(256,activation="relu"))
+    #model.add(keras.layers.Dropout(0.3))#taxa de "perda de neurónios"
+    model.add(keras.layers.Dense(128, activation="relu"))
     #output layer
     model.add(keras.layers.Dense(10,activation="softmax"))
 
@@ -118,7 +124,7 @@ if __name__=="__main__":
 
     #train the cnn/treinar a rede neural convulucional
     model.summary()
-    model.fit(x_train,y_train,validation_data=(x_validation,y_validation),batch_size=16,epochs=30)#batch size e epoch podem ser alterados para obter melhor desempenho
+    model.fit(x_train,y_train,validation_data=(x_validation,y_validation),batch_size=16,epochs=40)#batch size e epoch podem ser alterados para obter melhor desempenho
 
     #evaluate the cnn on the test set/testar a rede neural
     test_error,test_accuracy = model.evaluate(x_test,y_test,verbose=1)
